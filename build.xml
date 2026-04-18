@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="proyecto" default="run" basedir=".">
+
+  <property name="src.dir" value="src"/>
+  <property name="bin.dir" value="bin"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="dist.dir" value="dist"/>
+
+  <property name="main.class" value="App"/>
+
+  <path id="classpath">
+    <pathelement path="${bin.dir}"/>
+    <fileset dir="${lib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${bin.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${bin.dir}"/>
+    <javac srcdir="${src.dir}"
+           destdir="${bin.dir}"
+           includeantruntime="false"
+           debug="true">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="run" depends="compile">
+    <java classname="${main.class}" fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${dist.dir}"/>
+    <jar destfile="${dist.dir}/app.jar" basedir="${bin.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}"/>
+      </manifest>
+    </jar>
+  </target>
+
+</project>
